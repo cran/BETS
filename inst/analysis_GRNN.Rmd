@@ -1,0 +1,73 @@
+---
+title: "Fitted GRNN Model"
+author: "Talitha Speranza"
+date: "`r Sys.Date()`"
+output: html_document
+params:
+  code: 13522
+  auto.reg: TRUE
+  present.regs: FALSE 
+  lag.max: 2
+  regs: 4382
+  start.train: c(1996,1)
+  end.train: c(2015,4)
+  start.test: c(2015,5)
+  end.test: c(2016,4)
+  sigma.interval: c(0.8,0.9)
+  sigma.step: 0.1
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+```
+
+## User-Defined Parameters
+
+ Parameter          | Value              | Variable
+ ------------------ | ------------------ | ----------
+ Series Code        | `r as.integer(params$code)`    | `code` 
+ Maximum Lag        | `r params$lag.max` | `lag.max` 
+ Prevision Horizon  | `r params$n.ahead` | `n.ahead`  
+
+ 
+```{r echo = FALSE}
+  code = params$code
+  lag.max = params$lag.max
+  n.ahead = params$n.ahead
+```
+
+
+## Getting the Time Series from the BETS database
+
+```{r}
+library(BETS)
+ts = BETS.get(code)
+```
+
+### Information About the Series
+
+```{r}
+info <- BETS.search(code = code, view = F)
+```
+
+
+```{r echo = FALSE}
+names(info) <- c("Code","Description","Periodicity","Start","Source","Unit")
+info[,"Start"] <- paste(start(ts),collapse=".")
+info[,"Description"] <- trimws(info[,"Description"])
+knitr::kable(info, format = "markdown")
+```
+
+## Graph
+
+```{r}
+library(mFilter)
+trend = fitted(hpfilter(ts))
+
+library(dygraphs)
+dygraph(cbind(Series = ts, Trend = trend), main = info[,"Description"]) %>%
+  dyRangeSelector(strokeColor = "gray", fillColor = "gray") %>%
+    dyAxis("y", label = info[,"Unit"]) 
+```
+
+
