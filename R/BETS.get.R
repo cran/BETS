@@ -3,8 +3,11 @@
 #' @description Extracts a complete time series from either the Central Bank of Brazil (BCB), the Brazilian Institute of Geography and Statistics (IBGE) or the Brazilian Institute of Economics (FGV/IBRE).
 #' 
 #' @param code A \code{character}. The unique code that references the time series. This code can be obtained by using the \code{\link{BETS.search}} function.
-#' @param  data.frame A \code{boolean}. True if you want the output to be a data frame. True to \code{ts} output.
-#'
+#' @param data.frame A \code{boolean}. True if you want the output to be a data frame. True to \code{ts} output.
+#' @param from A \code{character} or a \code{Data} object. Starting date of the time series.
+#' @param to A \code{character} or a \code{Data} object. Ending date of the time series.
+#' @param frequency An \code{integer}. The frequency of the time series. It is not needed. It is going to be used only if the metadata for the series is corrupted. 
+#' 
 #' @return A \code{\link[stats]{ts}} (time series) object containing the desired series.
 #' 
 #' @note Due to the significant size of the databases, it could take a while to retrieve the values. However, it shouldn't take more than 90 seconds. 
@@ -27,95 +30,74 @@
 #' @seealso \code{\link[stats]{ts}}, \code{\link[BETS]{BETS.search}} and \code{\link[seasonal]{seas}}
 #' 
 #' @keywords get
-#' 
-#' @import sqldf
 #' @export 
 
 
-BETS.get = function(code, data.frame = FALSE){
-  
-    if(data.frame){
-      return(get.data.frame(code))
-    }
-  githubURL<- "https://github.com/GreedBlink/databases/raw/master/bacen_v7.Rdata"
-  
-  # readRDS(file=paste0(local,"/","bacen_v7.rda"))
-  load(url(githubURL))
-    # data = "bacen_v7"
-    code = as.character(code)
-    query = paste("select Periodicity from bacen_v7 where Codes like " ,"\'", code ,"\'",sep="")
+BETS.get = function(code, from = "", to = "", data.frame = FALSE, frequency = NULL){
+
     
-    freq = sqldf(query)[1,1]
-    freq = trimws(as.character(freq))
+  date_to   = strsplit(to,split="-")
+  to = paste0(date_to[[1]][3],"/",date_to[[1]][2],"/",date_to[[1]][1]) 
+  
+  date_from = strsplit(from,split="-")
+  from = paste0(date_from[[1]][3],"/",date_from[[1]][2],"/",date_from[[1]][1])
     
+    code = as.numeric(code)
+    aux = get.series.bacen(code, from = from, to = to)[[1]]
+    
+    freq = suppressMessages(BETS.search(code = code, view = F)[1,3])
+    freq = trimws(freq)
+  
     if(is.na(freq)){
       return(invisible(msg(paste(.MSG_NOT_AVAILABLE,"There is no corresponding entry in the metadata table."))))
     }
-    
-    
-    database="bacen_v7"
-    
-    aux1 = NULL
-    aux2 = NULL
-    
-    
-    
+
     if(freq == "A"){
-      githubURL <-"https://github.com/GreedBlink/databases/raw/master/ts_anuais.Rdata"
-      load(url(githubURL))
-      database = "ts_anuais"
-      freq = 1 
+      freq = 1
     }
     else if(freq == "Q"){
-      githubURL <-"https://github.com/GreedBlink/databases/raw/master/ts_trimestrais.Rdata"
-      load(url(githubURL))
-      database = "ts_trimestrais"
-      freq = 4 
+      freq = 4
     }
     else if(freq == "M"){
-      githubURL <-"https://github.com/GreedBlink/databases/raw/master/ts_mensais.Rdata"
-      load(url(githubURL))
-      database = "ts_mensais"
       freq = 12
     }
     else if(freq == "W"){
-      githubURL <-"https://github.com/GreedBlink/databases/raw/master/ts_semanais.Rdata"
-      load(url(githubURL))
-      database = "ts_semanais"
-      freq = 52 
+      freq = 52
     }
     else if(freq == "D"){
-      githubURL <-"https://github.com/GreedBlink/databases/raw/master/ts_diarias.Rdata"
-      load(url(githubURL))
-      database = "ts_diarias"
-      freq = 365 
+      freq = 365
     }
     else {
-      return(invisible(msg(paste(.MSG_NOT_AVAILABLE,"Malformed metadata. The value", freq, "is not valid for 'periodicity'"))))
+      msg(paste("Malformed metadata. The value", freq, "is not valid for 'periodicity'\n\n", .WARN_SOFT), warn = TRUE)
+      
+      if(is.null(frequency)){
+        data.frame = T
+      }
+      else {
+        freq = frequency 
+      }
     }
-    query = paste("select data, valor from ", database, " where serie like " ,"\'", code ,"\'",sep="")
-    aux = sqldf(query)
     
     if(nrow(aux) == 0){
-      return(invisible(msg(paste(.MSG_NOT_AVAILABLE,"Series is empty in database", database))))
+      return(invisible(msg(paste(.MSG_NOT_AVAILABLE,"Series is empty in the BACEN databases"))))
     }
     
     aux = na.omit(aux)
-    
-    if(is.factor(aux[,2])){
-      aux[,2] <- as.vector(aux[,2])
-    }
-    
-    if(is.factor(aux[,1])){
-      aux[,1] <- as.vector(aux[,1])
-    }
-    
+    # 
+    # if(is.factor(aux[,2])){
+    #   aux[,2] <- as.vector(aux[,2])
+    # }
+    # 
+    # if(is.factor(aux[,1])){
+    #   aux[,1] <- as.vector(aux[,1])
+    # }
+    # 
     aux1 = as.numeric(aux[,2])
-    
+ 
     try = FALSE
     
     try = tryCatch({
-      aux2 = as.date(aux[,1])},
+      aux2 = as.Date(aux[,1], format = "%d/%m/%Y")},
       error = function(err) {
           return(TRUE)
       }
@@ -146,14 +128,13 @@ BETS.get = function(code, data.frame = FALSE){
       return(invisible(msg(paste(.MSG_NOT_AVAILABLE,"Series contains only NAs."))))
     }
     
-    start = get.period(aux2[1],freq)
-
-    ts <- ts(aux1, start = start, freq = freq)
+    if(freq != 365 && !data.frame){
+      start = get.period(aux2[1],freq)
+      ts <- ts(aux1, start = start, freq = freq)
+    }
+    else {
+      ts = data.frame(date = aux1, value = aux2)
+    }
     
     return(ts)
 }
-
-
-
-
-

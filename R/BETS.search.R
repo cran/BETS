@@ -104,150 +104,169 @@
 #' 
 #' @references 
 #' 
-#' Central Bank of Brazil. 
+#' Central Bank of Brazil
 #' 
 #' @keywords search
-#' @importFrom utils View
-#' @import sqldf
+#' 
+#' @importFrom stringr str_split
+#' @importFrom  utils View
+#' @import sqldf utils
 #' @export 
 
-BETS.search = function(description,src,periodicity,unit,code,start,view=TRUE,lang="en"){
-  
+BETS.search = function(description = "*",src,periodicity,unit,code,start,view=TRUE,lang="en"){
   if(lang=="pt"){
     githubURL<-("https://github.com/GreedBlink/databases/raw/master/base_final_ptv1.Rdata")
-    load(url(githubURL))
+    load(conn<-url(githubURL))
     database="base_final_ptv1"
+    close(conn)
   }
   else{
     githubURL<- "https://github.com/GreedBlink/databases/raw/master/bacen_v7.Rdata"
-    # readRDS(file=paste0(local,"/","bacen_v7.rda"))
-    load(url(githubURL))
+    load(conn<-url(githubURL))
     database="bacen_v7"
+    close(conn)
   }
   
-  if(missing(description) && missing(src) && missing(periodicity) && missing(unit) && missing(code)){
-    return(msg("No search parameters. Please set the values of one or more parameters."))    
-  }
   
-  params = vector(mode = "character")
   
-  if(!missing(description)){
+  if(description == "*" && missing(src) && missing(periodicity) && missing(unit) && missing(code)){
+    query <- paste0("select * from ", database)
+    results = sqldf(query)
+    if(view==T){
+      return(View(results,"Metadata"))
+    }
+    else{
+      return(results)
+    }
+  }else{
     
-    ## Break description parameters
-    and_params = vector(mode = "character")
-    or_params = vector(mode = "character")
     
-    # Workaround
-    description = paste0(description, " ")
     
-    # Do not match whole expressions
-    exprs = regmatches(description,gregexpr("~ ?'(.*?)'",description))[[1]]
+    if(missing(description) && missing(src) && missing(periodicity) && missing(unit) && missing(code)){
+      return(msg("No search parameters. Please set the values of one or more parameters."))    
+    }
     
-    if(length(exprs) != 0){
-      for(i in 1:length(exprs)){
-        description = gsub(exprs[i], "", description)
-        exprs[i] = gsub("~", "", exprs[i])
-        exprs[i] = gsub("'", "", exprs[i])
-        exprs[i] = trimws(exprs[i])
-        and_params = c(and_params, paste0("Description not like " ,"\'%", exprs[i] ,"%\'"))
+    params = vector(mode = "character")
+    
+    if(!missing(description)){
+      
+      ## Break description parameters
+      and_params = vector(mode = "character")
+      or_params = vector(mode = "character")
+      
+      # Workaround
+      description = paste0(description, " ")
+      
+      # Do not match whole expressions
+      exprs = regmatches(description,gregexpr("~ ?'(.*?)'",description))[[1]]
+      
+      if(length(exprs) != 0){
+        for(i in 1:length(exprs)){
+          description = gsub(exprs[i], "", description)
+          exprs[i] = gsub("~", "", exprs[i])
+          exprs[i] = gsub("'", "", exprs[i])
+          exprs[i] = trimws(exprs[i])
+          and_params = c(and_params, paste0("Description not like " ,"\'%", exprs[i] ,"%\'"))
+        }
+      }
+      
+      # Match whole expressions
+      exprs = regmatches(description,gregexpr("'(.*?)'",description))[[1]]
+      
+      if(length(exprs) != 0){
+        for(i in 1:length(exprs)){
+          description = gsub(exprs[i], "", description)
+          exprs[i] = gsub("'", "", exprs[i])
+          exprs[i] = trimws(exprs[i])
+          or_params = c(or_params, paste0("Description like " ,"\'%", exprs[i] ,"%\'"))
+        }
+      }
+      
+      # Do not match words
+      words = regmatches(description,gregexpr("~ ?(.*?) ",description))[[1]]
+      
+      if(length(words) != 0){
+        for(i in 1:length(words)){
+          description = gsub(words[i], "", description)
+          words[i] = gsub("~", "", words[i])
+          words[i] = trimws(words[i])
+          and_params = c(and_params, paste0("Description not like " ,"\'%", words[i] ,"%\'"))
+        }
+      }
+      
+      # Match words
+      words = str_split(description, " ")[[1]]
+      words = words[words != ""]
+      
+      if(length(words) != 0){
+        for(i in 1:length(words)){
+          or_params = c(or_params, paste0("Description like " ,"\'%", words[i] ,"%\'"))
+        }
+      }
+      
+      if(length(and_params) > length(or_params)){
+        desc = and_params[1]
+        and_params = and_params[-1]
+      }
+      else {
+        desc = or_params[1]
+        or_params = or_params[-1]
+      }
+      
+      if(length(or_params) != 0){
+        for(i in 1:length(or_params)){
+          desc = paste(desc, "and", or_params[i])
+        }
+      }
+      
+      if(length(and_params) != 0){
+        for(i in 1:length(and_params)){
+          desc = paste(desc, "and", and_params[i])
+        }
+      }
+      
+      params = c(params, desc)
+    }
+    
+    if(!missing(src)){
+      params = c(params, paste0("source like " ,"\'%", src ,"%\'"))
+    }
+    
+    if(!missing(periodicity)){
+      params = c(params, paste0("periodicity like " ,"\'%", periodicity ,"%\'"))
+    }  
+    
+    if(!missing(unit)){
+      params = c(params, paste0("unit like " ,"\'%", unit ,"%\'"))
+    }  
+    
+    if(!missing(code)){
+      params = c(params, paste0("Codes like " ,"\'", code ,"\'"))
+    }
+    
+    if(!missing(start)){
+      params = c(params, paste0("start like " ,"\'", start ,"\'"))
+    }  
+    
+    query = paste("select Codes, Description, Periodicity, start, source, unit from", database ,"where")
+    query = paste(query, params[1])
+    
+    if(length(params) != 1) {
+      for(i in 2:length(params)){
+        query = paste(query, "and", params[i])
       }
     }
-
-    # Match whole expressions
-    exprs = regmatches(description,gregexpr("'(.*?)'",description))[[1]]
     
-    if(length(exprs) != 0){
-      for(i in 1:length(exprs)){
-        description = gsub(exprs[i], "", description)
-        exprs[i] = gsub("'", "", exprs[i])
-        exprs[i] = trimws(exprs[i])
-        or_params = c(or_params, paste0("Description like " ,"\'%", exprs[i] ,"%\'"))
-      }
-    }
+    metadata = sqldf(query)
     
-    # Do not match words
-    words = regmatches(description,gregexpr("~ ?(.*?) ",description))[[1]]
+    msg(paste("Found", nrow(metadata),"out of 39073 time series.",sep=" "))
     
-    if(length(words) != 0){
-      for(i in 1:length(words)){
-        description = gsub(words[i], "", description)
-        words[i] = gsub("~", "", words[i])
-        words[i] = trimws(words[i])
-        and_params = c(and_params, paste0("Description not like " ,"\'%", words[i] ,"%\'"))
-      }
+    if(view==T){
+      return(
+        View(metadata,"Metadata"))
     }
-    
-    # Match words
-    words = str_split(description, " ")[[1]]
-    words = words[words != ""]
-    
-    if(length(words) != 0){
-      for(i in 1:length(words)){
-        or_params = c(or_params, paste0("Description like " ,"\'%", words[i] ,"%\'"))
-      }
+    else{
+      return(metadata)
     }
-    
-    if(length(and_params) > length(or_params)){
-      desc = and_params[1]
-      and_params = and_params[-1]
-    }
-    else {
-      desc = or_params[1]
-      or_params = or_params[-1]
-    }
-
-    if(length(or_params) != 0){
-      for(i in 1:length(or_params)){
-        desc = paste(desc, "and", or_params[i])
-      }
-    }
-    
-    if(length(and_params) != 0){
-      for(i in 1:length(and_params)){
-        desc = paste(desc, "and", and_params[i])
-      }
-    }
-    
-    params = c(params, desc)
-  }
-  
-  if(!missing(src)){
-    params = c(params, paste0("source like " ,"\'%", src ,"%\'"))
-  }
-  
-  if(!missing(periodicity)){
-    params = c(params, paste0("periodicity like " ,"\'%", periodicity ,"%\'"))
-  }  
-  
-  if(!missing(unit)){
-    params = c(params, paste0("unit like " ,"\'%", unit ,"%\'"))
-  }  
-  
-  if(!missing(code)){
-    params = c(params, paste0("Codes like " ,"\'", code ,"\'"))
-  }
-  
-  if(!missing(start)){
-    params = c(params, paste0("start like " ,"\'", start ,"\'"))
-  }  
-
-  query = paste("select Codes, Description, Periodicity, start, source, unit from", database ,"where")
-  query = paste(query, params[1])
-  
-  if(length(params) != 1) {
-    for(i in 2:length(params)){
-      query = paste(query, "and", params[i])
-    }
-  }
-  
-  metadata = sqldf(query)
-  
-  msg(paste("Found", nrow(metadata),"out of 39073 time series.",sep=" "))
-  
-  if(view==T){
-    return(View(metadata))
-  }
-  else{
-    return(metadata)
   }
 }
