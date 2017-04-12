@@ -9,9 +9,9 @@ BETS.get(code, from = "", to = "", data.frame = FALSE, frequency = NULL)
 \arguments{
 \item{code}{A \code{character}. The unique code that references the time series. This code can be obtained by using the \code{\link{BETS.search}} function.}
 
-\item{from}{A \code{character} or a \code{Data} object. Starting date of the time series.}
+\item{from}{A \code{character} or a \code{Data} object. Starting date of the time series (format YYYY-DD-MM).}
 
-\item{to}{A \code{character} or a \code{Data} object. Ending date of the time series.}
+\item{to}{A \code{character} or a \code{Data} object. Ending date of the time series (format YYYY-DD-MM).}
 
 \item{data.frame}{A \code{boolean}. True if you want the output to be a data frame. True to \code{ts} output.}
 
@@ -37,13 +37,9 @@ Due to the significant size of the databases, it could take a while to retrieve 
  
  # Exchange rate - Free - United States dollar (purchase)
  #us.brl <- BETS.get(3691)
- #require(seasonal)
- #us.brl.seasonally_adjusted <- seas(us.brl)
- #plot(us.brl.seasonally_adjusted)
  
 }
 \seealso{
 \code{\link[stats]{ts}}, \code{\link[BETS]{BETS.search}} and \code{\link[seasonal]{seas}}
 }
 \keyword{get}
-
