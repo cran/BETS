@@ -62,3 +62,4 @@ It is not yet possible to make charts of custom series.
 \author{
 Talitha Speranza \email{talitha.speranza@fgv.br}
 }
+
