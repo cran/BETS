@@ -12,11 +12,11 @@ get.series.bacen <- function(x, from = "", to = "", save = ""){
   
   
   if (missing(x)){
-    stop("Need to specify at least one series.")
+    stop("Need to specify at least one serie.")
   }
   
   if (! is.numeric(x)){
-    stop("x must be numeric")
+    stop("Argument x must be numeric.")
   }
   
   if (from == ""){
@@ -56,7 +56,6 @@ get.series.bacen <- function(x, from = "", to = "", save = ""){
     
     assign(serie[i], result) 
   }
-  
   
   for (i in len){
     texto = utils::read.csv2(textConnection(eval(as.symbol(

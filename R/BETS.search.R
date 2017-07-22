@@ -93,11 +93,10 @@
 #' This function uses specific version of the \code{\link[RMySQL]{RMySQL}} package. If it does not run correctly, try installing version 0.10.9 of the 
 #' \code{\link[RMySQL]{RMySQL}} package using:
 #' 
-#' > remove.packages("RMySQL") - If necessary
-#' 
-#' > install.packages("devtools) - If necessary
-#' 
-#' > devtools::install_version("RMySQL", version = "0.10.9", repos = "http://cran.us.r-project.org")  
+#' > remove.packages("RMySQL") # If necessary
+#' > install.packages("devtools) # If necessary
+#' > devtools::install_version("DBI", version = "0.5", repos = "http://cran.us.r-project.org")
+#' > devtools::install_version("RMySQL", version = "0.10.9", repos = "http://cran.us.r-project.org")
 #'
 #' 
 #' 
@@ -126,7 +125,7 @@
 
 BETS.search = function(description="*",src,periodicity,unit,code,start,view=TRUE,lang="en"){
   
-  conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.20.164.178",port=3306)
+  conn = connection()
   
   if(lang == "en"){
     tb = "metadata_en"

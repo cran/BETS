@@ -4,8 +4,8 @@
 #' 
 #' @param code A \code{character}. The unique code that references the time series. This code can be obtained by using the \code{\link{BETS.search}} function.
 #' @param data.frame A \code{boolean}. True if you want the output to be a data frame. True to \code{ts} output.
-#' @param from A \code{character} or a \code{Data} object. Starting date of the time series (format YYYY-DD-MM).
-#' @param to A \code{character} or a \code{Data} object. Ending date of the time series (format YYYY-DD-MM).
+#' @param from A \code{character} or a \code{Data} object. Starting date of the time series (format YYYY-MM-DD).
+#' @param to A \code{character} or a \code{Data} object. Ending date of the time series (format YYYY-MM-DD).
 #' @param frequency An \code{integer}. The frequency of the time series. It is not needed. It is going to be used only if the metadata for the series is corrupted. 
 #' 
 #' @return A \code{\link[stats]{ts}} (time series) object containing the desired series.
@@ -45,6 +45,15 @@ BETS.get = function(code, from = "", to = "", data.frame = FALSE, frequency = NU
     
     code = as.numeric(code)
     aux = get.series.bacen(code, from = from, to = to)[[1]]
+    
+    x <- get.series.bacen(code, from = from, to = to)[[1]]
+    y <- get.series.bacen(code, from = from, to = to)[[1]]
+    
+    if(nrow(aux)<nrow(x)){
+      aux <- x
+    }else if(nrow(aux)<nrow(y)){
+      aux <- y
+    }
     
     if(nrow(aux) == 0){
       return(invisible(msg(paste(.MSG_NOT_AVAILABLE,"Series is empty in the BACEN databases"))))
@@ -97,9 +106,9 @@ BETS.get = function(code, from = "", to = "", data.frame = FALSE, frequency = NU
   } else {
     
     freq = 365 
-    conn = dbConnect(MySQL(),db="bets",user="BETS_user",password="123456",host="200.20.164.178",port=3306)
+    conn = connection()
     
-    aux = dbGetQuery(conn,paste0("select date, value from IPC where code = '",code,"'"))
+    aux = DBI::dbGetQuery(conn,paste0("select date, value from bets.IPC where code = '",code,"' order by date asc"))
     
     invisible(dbDisconnect(conn))
     
@@ -114,12 +123,19 @@ BETS.get = function(code, from = "", to = "", data.frame = FALSE, frequency = NU
   
   try = FALSE
   
+ if(grepl("-",aux[1,1])){
   try = tryCatch({
-    aux2 = as.Date(aux[,1], format = "%d/%m/%Y")},
+    aux2 = as.Date(aux[,1], format = "%Y-%m-%d")},
     error = function(err) {
       return(TRUE)
     }
-  )
+  )}else{
+    try = tryCatch({
+      aux2 = as.Date(aux[,1], format = "%d/%m/%Y")},
+      error = function(err) {
+        return(TRUE)
+      })
+  }
   
   
   suppressWarnings(if(try==TRUE){
