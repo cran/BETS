@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2017-08-02" />
+<meta name="date" content="2017-08-29" />
 
 <title>BETS - Brazilian Economic Time Series: Basic Usage</title>
 
@@ -72,7 +72,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <address class="author_afil">
 Instituto Brasileiro de Economia (IBRE)<br><a class="author_email" href="mailto:#"><a href="mailto:talitha.speranza@fgv.br">talitha.speranza@fgv.br</a></a>
 </address>
-<h4 class="date"><em>2017-08-02</em></h4>
+<h4 class="date"><em>2017-08-29</em></h4>
 
 
 
@@ -182,14 +182,6 @@ Instituto Brasileiro de Economia (IBRE)<br><a class="author_email" href="mailto:
 <span class="kw">BETS.search</span>(<span class="dt">description =</span> <span class="st">&quot;'distrito federal'&quot;</span>, <span class="dt">periodicity =</span> <span class="st">'A'</span>, <span class="dt">src =</span> <span class="st">'IBGE'</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Search for accumulated GDP series</span>
 <span class="kw">BETS.search</span>(<span class="dt">description =</span> <span class="st">&quot;gdp accumulated&quot;</span>, <span class="dt">unit =</span> <span class="st">&quot;US$&quot;</span>, <span class="dt">view =</span> F)</code></pre></div>
-<pre><code>## 
-## BETS-package: Found 2 out of 16854 time series.</code></pre>
-<pre><code>##   code                                            description
-## 1 4192 GDP accumulated in the last 12 months - in US$ million
-## 2 4386           GDP accumulated in the year - in US$ million
-##            unit periodicity      start last_value    source
-## 1 US$ (million)           M 31/01/1990   may/2017 BCB-Depec
-## 2 US$ (million)           M 31/01/1990   may/2017 BCB-Depec</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Search for consumption series, not seasonally adjusted, not private</span>
 <span class="kw">BETS.search</span>(<span class="dt">description =</span> <span class="st">&quot;consumption ~ 'seasonally adjusted' ~ private&quot;</span>, <span class="dt">view =</span> F)</code></pre></div>
 <pre><code>## 
@@ -219,13 +211,13 @@ gdp_accum &lt;-<span class="st"> </span><span class="kw">BETS.get</span>(<span c
 <span class="kw">window</span>(gdp_accum, <span class="dt">start =</span> <span class="kw">c</span>(<span class="dv">2014</span>,<span class="dv">1</span>))</code></pre></div>
 <pre><code>##          Jan     Feb     Mar     Apr     May     Jun     Jul     Aug
 ## 2014 2472533 2481284 2481924 2479634 2480629 2475636 2471898 2465860
-## 2015 2403690 2349150 2301000 2246336 2189805 2141042 2085474 2029582
-## 2016 1792830 1792407 1788570 1787263 1786178 1788167 1786639 1789734
-## 2017 1815461 1830139 1848533 1864606 1879933 1895371                
+## 2015 2403697 2349154 2301000 2246336 2189805 2141042 2085474 2029582
+## 2016 1792812 1792403 1788570 1787252 1786167 1788168 1786635 1789715
+## 2017 1818416 1836121 1857864 1873624 1893783 1913866 1934341        
 ##          Sep     Oct     Nov     Dec
 ## 2014 2465907 2462505 2457480 2454846
 ## 2015 1970754 1911276 1854424 1797601
-## 2016 1791403 1790562 1794418 1799436
+## 2016 1791403 1790642 1794441 1799436
 ## 2017</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Get the series for the GDP of the Federal District at market prices</span>
 gdp_df &lt;-<span class="st"> </span><span class="kw">BETS.get</span>(<span class="dv">23992</span>, <span class="dt">data.frame =</span> T)

@@ -1,18 +1,19 @@
 Package: BETS
 Type: Package
 Title: Brazilian Economic Time Series
-Version: 0.3.1
-Date: 2017-08-02
+Version: 0.3.2
+Date: 2017-08-29
 Authors@R: c(person("Pedro", "Costa Ferreira", email = "pedro.guilherme@fgv.br", role = c("aut", "cre")),
               person("Talitha", "Speranza", email = "talitha.speranza@fgv.br", role = "aut"),
 			        person("Jonatha", "Azevedo", email = "jonatha.azevedo@fgv.br", role = "aut"),
-			        person("Fernando", "Teixeira", email = "fernando.teixeira@fgv.br", role = "aut"))
+			        person("Fernando", "Teixeira", email = "fernando.teixeira@fgv.br", role = "aut"),
+			        person("Daiane", "Marcolino", email = "daiane.mattos@fgv.br", role = "aut"))
 Maintainer: Pedro Costa Ferreira <pedro.guilherme@fgv.br>
 Depends: R (>= 3.4.1)
 Imports: grnn, ggplot2, plotly, urca, forecast, sqldf, zoo, rmarkdown,
         foreign, seasonal, stringr, dygraphs, RCurl, shiny (>= 0.13),
         miniUI (>= 0.1.1), rstudioapi (>= 0.4), DT, webshot, RMySQL,
-        DBI, rjson, rvest, xml2, lubridate, htmltools
+        DBI, rjson, httr,rvest, xml2, lubridate, htmltools
 Suggests: mFilter, devtools, xts, knitr
 Description: It provides access to and information about the most important
     Brazilian economic time series - from the Getulio Vargas Foundation <http://portal.fgv.br/en>,
@@ -28,10 +29,11 @@ LazyData: true
 RoxygenNote: 6.0.1
 NeedsCompilation: no
 VignetteBuilder: knitr
-Packaged: 2017-08-02 18:30:46 UTC; jonatha
+Repository: CRAN
+Packaged: 2017-08-29 20:10:49 UTC; jonatha
 Author: Pedro Costa Ferreira [aut, cre],
   Talitha Speranza [aut],
   Jonatha Azevedo [aut],
-  Fernando Teixeira [aut]
-Repository: CRAN
-Date/Publication: 2017-08-03 12:06:57 UTC
+  Fernando Teixeira [aut],
+  Daiane Marcolino [aut]
+Date/Publication: 2017-08-29 20:45:48 UTC

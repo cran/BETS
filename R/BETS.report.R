@@ -2,7 +2,7 @@
 #' 
 #' @description Generate automatic reports with a complete analysis of a set of time series. For now, only a SARIMA analysis (Box & Jenkins approach) is possible. In a near future, a GRNN (General Regression Neural Network) analysis will be released. Soon after, Holt-Winters, GRNN, Multilayer Perceptron, Fuzzy Logic and Box-Cox analysis will become available.
 #' 
-#' @param mode A \code{character}.The type of the analysis. So far, only 'SARIMA' is available.
+#' @param mode A \code{character}.The type of the analysis. So far, 'SARIMA', 'GRNN' and 'HOLT-WINTERS' are available.
 #' @param ts A \code{integer}, a \code{ts} object or a \code{list} of \code{integer}s and \code{ts} objects. Either the ID of the series in the BETS database or a time series object (any series, not just BETS's). If a \code{list} is provided, a report is generated for each series in this list, which can be mixed with IDs and time series objects.
 #' @param parameters A \code{list}. The parameters of the report. See the 'details' section for more information.
 #' @param report.file A \code{character}. A path and a name for the report file (an .html file). If there is more than one series, this name will be used as a prefix. If this parameter is not provided, the report will be saved inside the 'reports' folder, under the BETS installation directory. 
@@ -13,8 +13,13 @@
 #' \bold{SARIMA Report Parameters}
 #' 
 #' \itemize{
-#' \item{\code{lag.max}: An \code{integer} Maximum number of lags to show on the ACFs e PACFs}
-#' \item{\code{n.ahead}: An \code{integer} Prevision horizon (number of steps ahead)}
+#' \item{\code{af.lag}: An \code{integer}. Maximum number of lags to show on the ACFs e PACFs}
+#' \item{\code{n.ahead}: An \code{integer}. Prevision horizon (number of steps ahead)}
+#' \item{\code{inf.crit}: A \code{character}. Information criterion to be used in model selection.}
+#' \item{\code{dummy}: A \code{ts} object. A dummy regressor. Must also cover the forecasting period.}
+#' \item{\code{ur.test}: A \code{list}. Parameters of \code{\link[BETS]{BETS.ur_test}} }
+#' \item{\code{arch.test}: A \code{list}. Parameters of \code{\link[BETS]{BETS.arch_test}} }
+#' \item{\code{box.test}: A \code{list}. Parameters of \code{\link[stats]{Box.test}} }
 #' }
 #' 
 #' \bold{GRNN Report Parameters}
@@ -66,6 +71,30 @@
 #' 
 #' # series = list(4447, 21864)
 #' # BETS.report(ts = series, parameters = parameters)
+#' 
+#' # parameters = list( 
+#' # af.lags = 25,
+#' # n.ahead = 15,
+#' # dummy = dum,
+#' # arch.test = list(lags = 12, alpha = 0.01),
+#' # box.test = list(type = "Box-Pierce")
+#' # )
+# 
+#' # BETS.report(ts = window(BETS.get(21864), start= c(2002,1) , end = c(2015,10)), 
+#' #parameters = parameters)
+#' 
+#' # dum <- BETS.dummy(start= c(2002,1) , end = c(2017,1) , 
+#' #from = c(2008,9) , to = c(2008,11))
+#' 
+#' # parameters = list( 
+#' #    af.lags = 25,
+#' #    n.ahead = 15,
+#' #    dummy = dum
+#' # )
+#' 
+#' # BETS.report(ts = window(BETS.get(21864), start= c(2002,1) , end = c(2015,10)), 
+#' #parameters = parameters)
+#'
 #' 
 #' ##-- GRNN
 #' 
