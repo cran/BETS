@@ -1,10 +1,5 @@
 ---
 title: "BETS - Brazilian Economic Time Series: Basic Usage"
-author:
-  - name: Talitha F. Speranza
-    affiliation: Instituto Brasileiro de Economia (IBRE)
-    address: Fundação Getúlio Vargas (FGV)
-    email:  talitha.speranza@fgv.br
 bibliography: 
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
