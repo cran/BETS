@@ -20,8 +20,8 @@ Searches the Sidra databases for a series by its description or a given table de
 }
 \examples{
 \dontrun{
-BETS.sidra.search("pib")
-BETS.sidra.search(1248)
+BETS.sidra.search(description = "pib")
+BETS.sidra.search(code = 1248)
 }
 }
 \keyword{IBGE}
