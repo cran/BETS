@@ -1,19 +1,20 @@
 Package: BETS
 Type: Package
 Title: Brazilian Economic Time Series
-Version: 0.3.6
-Date: 2018-04-02
-Authors@R: c(person("Pedro", "Costa Ferreira", email = "pedro.guilherme@fgv.br", role = "aut"),
-                    person("Jonatha", "Costa", email = "jonatha.costa@fgv.br", role = c("aut", "cre")),
-                    person("Talitha", "Speranza", email = "talitha.speranza@fgv.br", role ="aut"),
+Version: 0.4.2
+Date: 2018-05-22
+Authors@R: c(       person("Pedro", "Costa Ferreira", email = "pedro.guilherme@fgv.br", role = "aut"),
+                    person("Talitha", "Speranza", email = "talitha.speranza@fgv.br",role = c("aut", "cre")),
+                    person("Jonatha", "Costa", email = "jonatha.costa@fgv.br", role = "aut"),
 			        person("Fernando", "Teixeira", email = "fernando.teixeira@fgv.br", role = "ctb"),
 			        person("Daiane", "Marcolino", email = "daiane.mattos@fgv.br", role = "ctb"))
-Maintainer: Jonatha Costa <jonatha.costa@fgv.br>
+Maintainer: Talitha Speranza <talitha.speranza@fgv.br>
 Depends: R (>= 3.4)
 Imports: grnn, ggplot2, plotly, urca, forecast, zoo, rmarkdown,
         foreign, seasonal, stringr, dygraphs, shiny (>= 0.13), miniUI
-        (>= 0.1.1), rstudioapi (>= 0.4), DT, webshot, RMySQL, DBI,
-        rjson, rvest, xml2, lubridate, htmltools, httr
+        (>= 0.1.1), rstudioapi (>= 0.4), DT, webshot, RMySQL,
+        digest,DBI, rjson, rvest, xml2, lubridate, htmltools, httr,
+        dplyr, sqldf
 Suggests: mFilter, devtools, xts, knitr
 Description: It provides access to and information about the most important
     Brazilian economic time series - from the Getulio Vargas Foundation <http://portal.fgv.br/en>,
@@ -29,10 +30,11 @@ LazyData: true
 RoxygenNote: 6.0.1
 NeedsCompilation: no
 Repository: CRAN
-Packaged: 2018-04-02 18:25:24 UTC; jonatha.costa
+VignetteBuilder: knitr
+Packaged: 2018-05-22 21:41:53 UTC; jonatha
 Author: Pedro Costa Ferreira [aut],
-  Jonatha Costa [aut, cre],
-  Talitha Speranza [aut],
+  Talitha Speranza [aut, cre],
+  Jonatha Costa [aut],
   Fernando Teixeira [ctb],
   Daiane Marcolino [ctb]
-Date/Publication: 2018-04-02 19:31:34 UTC
+Date/Publication: 2018-05-24 17:15:33 UTC

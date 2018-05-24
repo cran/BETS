@@ -2,7 +2,7 @@
 #' 
 #' @description Extracts a complete time series from either the Central Bank of Brazil (BCB), the Brazilian Institute of Geography and Statistics (IBGE) or the Brazilian Institute of Economics (FGV/IBRE).
 #' 
-#' @param code A \code{character}. The unique code that references the time series. This code can be obtained by using the \code{\link{BETS.search}} function.
+#' @param code A \code{character}. The unique code that references the time series. This code can be obtained by using the \code{\link{BETSsearch}} function.
 #' @param data.frame A \code{boolean}. True if you want the output to be a data frame. True to \code{ts} output.
 #' @param from A \code{character} or a \code{Data} object. Starting date of the time series (format YYYY-MM-DD).
 #' @param to A \code{character} or a \code{Data} object. Ending date of the time series (format YYYY-MM-DD).
@@ -15,12 +15,6 @@
 
 
 get.series = function(code, from = "", to = "", data.frame = FALSE, frequency = NULL){
-  
-  # date_to = strsplit(to,split="-")
-  # to = paste0(date_to[[1]][3],"/",date_to[[1]][2],"/",date_to[[1]][1]) 
-  # 
-  # date_from = strsplit(from,split="-")
-  # from = paste0(date_from[[1]][3],"/",date_from[[1]][2],"/",date_from[[1]][1])
   
   
   if(!grepl("ST_",code)){
@@ -35,22 +29,26 @@ get.series = function(code, from = "", to = "", data.frame = FALSE, frequency = 
     
     
     code = as.numeric(code)
-    aux = get.series.bacen(code, from = from, to = to)[[1]]
     
-    x <- get.series.bacen(code, from = from, to = to)[[1]]
-    y <- get.series.bacen(code, from = from, to = to)[[1]]
-    
-    if(nrow(aux)<nrow(x)){
-      aux <- x
-    }else if(nrow(aux)<nrow(y)){
-      aux <- y
-    }
+    aux = tryCatch({
+        get.series.bacen(code, from = from, to = to)[[1]]
+    }, error = function(e){
+        data.frame()
+    })
     
     if(nrow(aux) == 0){
-      return(invisible(msg(paste(.MSG_NOT_AVAILABLE,"Series is empty in the BACEN databases"))))
+        
+        examples <- readRDS(paste0(system.file(package="BETS"),"/data/examples.rds"))
+        examples <- examples[examples$code == code,]
+        
+        if(nrow(examples) != 0){
+            aux <- examples[,c(1,2)] 
+        } else {
+            return(invisible(msg(paste(.MSG_NOT_AVAILABLE,"Series is empty in the BACEN databases"))))
+        }
     }
     
-    sch = suppressMessages(BETS.search(code = code, view = F))
+    sch = suppressMessages(BETSsearch(code = code, view = F))
     freq = NA
     
     if(class(sch) == "data.frame"){
@@ -116,20 +114,22 @@ get.series = function(code, from = "", to = "", data.frame = FALSE, frequency = 
   
  if(grepl("-",aux[1,1])){
   try = tryCatch({
-    aux2 = as.Date(aux[,1], format = "%Y-%m-%d")},
+    aux2 = as.Date(aux[,1], format = "%Y-%m-%d")
+    FALSE },
     error = function(err) {
       return(TRUE)
     }
   )}else{
     try = tryCatch({
-      aux2 = as.Date(aux[,1], format = "%d/%m/%Y")},
+      aux2 = as.Date(aux[,1], format = "%d/%m/%Y")
+      FALSE },
       error = function(err) {
         return(TRUE)
       })
   }
   
   
-  suppressWarnings(if(try==TRUE){
+  suppressWarnings(if(try){
     
     return(invisible(msg(paste(.MSG_NOT_AVAILABLE,"Date formatting is inadequate."))))
   })
