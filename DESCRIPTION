@@ -1,8 +1,8 @@
 Package: BETS
 Type: Package
 Title: Brazilian Economic Time Series
-Version: 0.4.2
-Date: 2018-05-22
+Version: 0.4.3
+Date: 2018-06-05
 Authors@R: c(       person("Pedro", "Costa Ferreira", email = "pedro.guilherme@fgv.br", role = "aut"),
                     person("Talitha", "Speranza", email = "talitha.speranza@fgv.br",role = c("aut", "cre")),
                     person("Jonatha", "Costa", email = "jonatha.costa@fgv.br", role = "aut"),
@@ -31,10 +31,10 @@ RoxygenNote: 6.0.1
 NeedsCompilation: no
 Repository: CRAN
 VignetteBuilder: knitr
-Packaged: 2018-05-22 21:41:53 UTC; jonatha
+Packaged: 2018-06-05 15:12:09 UTC; jonatha
 Author: Pedro Costa Ferreira [aut],
   Talitha Speranza [aut, cre],
   Jonatha Costa [aut],
   Fernando Teixeira [ctb],
   Daiane Marcolino [ctb]
-Date/Publication: 2018-05-24 17:15:33 UTC
+Date/Publication: 2018-06-05 16:34:21 UTC

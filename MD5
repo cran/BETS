@@ -1,10 +1,10 @@
-4e4062408f454f831182ab6ef6799376 *DESCRIPTION
-695c52859019d9315ae6d83c87855541 *NAMESPACE
+3b39cf7f24c856a820246b67fe702029 *DESCRIPTION
+bfc698653a7b54a3f74135d9797b5f72 *NAMESPACE
 8e48c6f040ddc6c786cd49d320f883bf *R/BETS.R
 c32057511beb4944fc24ea74f6fc88c8 *R/BETS.addin_en.R
 40ef818f08738015b8350d2df710deb4 *R/BETS.addin_pt.R
 64fad73937da9fb85496e875538c4949 *R/BETSget.R
-69169eee0d905e0c709ae43acf28026c *R/BETSsearch.R
+693e518676cac7bac0ba49234416a3ab *R/BETSsearch.R
 9d90d7ace80bd2e546ca1f8df10a7036 *R/arch_test.R
 51cf34a7189a79bd2572aa237f77a531 *R/as.date.R
 6c070b5bb15aa22b35130f5474ec18ab *R/chart.R
@@ -12,7 +12,7 @@ c32057511beb4944fc24ea74f6fc88c8 *R/BETS.addin_en.R
 2951f4750a472aff9acdee2fee527859 *R/chart.add_extra.R
 21bce1ca00b51984cfb68dda5dd90b1f *R/chart.add_notes.R
 44a83510c491f9d654db74a705a4d423 *R/check.series.R
-91f8d6cb2a26a7cc262ccb5c3a4faef3 *R/connection.R
+4864b2143ab80ce26a190299b36cb50b *R/connection.R
 9f4e32e595a45d6315f56e84406fb560 *R/constants.R
 47c9eaec48b90227e17127e98d342470 *R/corrgram.R
 b79966a24272edac1b5f1d518eca76b2 *R/dashboard.R
@@ -75,7 +75,7 @@ af594730abdb3ce6c771fefe31d2c5ef *inst/cei.csv
 b01358f035071f5f8be1a1fc2c1fb3ca *inst/custom_dashboard.Rmd
 9ddc495a4fc21825de22500b14635dbf *inst/doc/BETS_basic_usage.R
 a3a46bb37afe6bc7b572e906fda10c26 *inst/doc/BETS_basic_usage.Rmd
-fb18d76bed97c13150df91c762e43df2 *inst/doc/BETS_basic_usage.html
+7f8f6a709f5428fb51d0f18e6c0cef77 *inst/doc/BETS_basic_usage.html
 6b2f0c02473e889b812ccc2b12ef96c2 *inst/ei_vars.csv
 e190fc98aa5929b43230a9d194afeb0d *inst/extraction.R
 50718e36e74c8c16e35e8f679367c7e8 *inst/fix_figs.tex
@@ -84,6 +84,7 @@ e190fc98aa5929b43230a9d194afeb0d *inst/extraction.R
 80f83d41e574a9c16cfe0083ee5079e3 *inst/incerteza_fgv.csv
 cd75fc386193da6b373e17be839e6c25 *inst/kcptr.rda
 beda554a6a0dedf0da6b623a7f013c75 *inst/key.RData
+a5bfa52231d1d3370ae711533eec39d3 *inst/key.rds
 c7d57d2d4a42a201f89743fa5d55bcb8 *inst/lei.csv
 675024459ec57acbf5e8ca4bcb328317 *inst/lei_comps.csv
 f3d52e4eb176e00ef25edfd16e08d3ba *inst/lei_vars.csv
@@ -102,7 +103,7 @@ a7dece48261314511cf2784496d499d2 *man/BETS.Rd
 06d44572b490e329fcf129ea8dfcc95c *man/BETS.addin_en.Rd
 bd9eb370aa8efd48978d6df8029835d8 *man/BETS.addin_pt.Rd
 fcf0a7e46ff33640956b6d201e485a26 *man/BETSget.Rd
-3f57fb3c9d208ad3f3b8414db0b7bd07 *man/BETSsearch.Rd
+2cb65f7f8aac862cd73b62c466c64430 *man/BETSsearch.Rd
 6da9efd3148431d01a4f7e8114c2511f *man/arch_test.Rd
 a62302d52336ba98880c3c6c3e3d1433 *man/chart.Rd
 8464e5a5506068ba3576c08adfd4b167 *man/chart.add_basic.Rd
