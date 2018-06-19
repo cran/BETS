@@ -1,4 +1,4 @@
-3b39cf7f24c856a820246b67fe702029 *DESCRIPTION
+9b23f051dd7f30f428b73ee74ba90fe2 *DESCRIPTION
 bfc698653a7b54a3f74135d9797b5f72 *NAMESPACE
 8e48c6f040ddc6c786cd49d320f883bf *R/BETS.R
 c32057511beb4944fc24ea74f6fc88c8 *R/BETS.addin_en.R
@@ -44,7 +44,7 @@ cb0eb36b34abc2d2ef5cab04a77156cd *R/draw.sent_ind.R
 d77f252769afe0a22d5e2e956d29a26d *R/draw.vargdp.R
 ccf6239c960d2d1ea9be65f1f884ad98 *R/dummy.R
 bb9c6816670e7e1f8e3a021e578f0d75 *R/get.period.R
-857e00ebd48fc9a2c80da22b5bb519fc *R/get.series.R
+b6be138b57bef0f7f9904a0ed5afc5ba *R/get.series.R
 39faf180f0f0b0a4e4faef3d49a2197c *R/get.series.bacen.R
 5a0867ac9f6b5aaca0c272b70fe945e3 *R/grnn.test.R
 1f9eb6012309b797e83e8c1444326fd2 *R/grnn.train.R
@@ -75,12 +75,9 @@ af594730abdb3ce6c771fefe31d2c5ef *inst/cei.csv
 b01358f035071f5f8be1a1fc2c1fb3ca *inst/custom_dashboard.Rmd
 9ddc495a4fc21825de22500b14635dbf *inst/doc/BETS_basic_usage.R
 a3a46bb37afe6bc7b572e906fda10c26 *inst/doc/BETS_basic_usage.Rmd
-7f8f6a709f5428fb51d0f18e6c0cef77 *inst/doc/BETS_basic_usage.html
+47ac06b36c2449602c0bb0ea3963f737 *inst/doc/BETS_basic_usage.html
 6b2f0c02473e889b812ccc2b12ef96c2 *inst/ei_vars.csv
-e190fc98aa5929b43230a9d194afeb0d *inst/extraction.R
 50718e36e74c8c16e35e8f679367c7e8 *inst/fix_figs.tex
-6c9d6491e39210e70d98d90cadccff00 *inst/graphs/conf_lvl.png
-20f16cde6f2356098a5bccb5eb4b5444 *inst/graphs/sent_ind.png
 80f83d41e574a9c16cfe0083ee5079e3 *inst/incerteza_fgv.csv
 cd75fc386193da6b373e17be839e6c25 *inst/kcptr.rda
 beda554a6a0dedf0da6b623a7f013c75 *inst/key.RData
@@ -92,6 +89,7 @@ f00779a6114ebdd1103c04e70c66ad9e *inst/logo_business.png
 be4c8cbcfe365cb02e2ef5a90ebe5dd9 *inst/logo_custom.png
 539132efef3471c14112bb6909d2f065 *inst/logo_ibre.png
 8a5047becdc0c1f8f0d9dbe71d1772c8 *inst/logo_situation.png
+35816d3fd953114053629711202a1ac4 *inst/macro_dashboard.pdf
 5e7d148ba5c2d1ddfddcc2007a4864f2 *inst/macro_situation_dashboard.Rmd
 707757fc008651d77717ce26a6de5ea6 *inst/mon_pib_comps.csv
 29978bb8b56009217ca2d5de0ccf6270 *inst/mon_pib_vars.csv
@@ -159,8 +157,6 @@ fd17f5c8aab6df5eab46b3fe6908b28b *man/std_resid.Rd
 b5b02efac845c525aa7261f3e78261f5 *man/t_test.Rd
 f1bf1feb8cfc1aa823a8359d3cd16aae *man/ur_test.Rd
 a3a46bb37afe6bc7b572e906fda10c26 *vignettes/BETS_basic_usage.Rmd
-8154439104f16a61cb91e0e9a0a18620 *vignettes/BETS_basic_usage.fdb_latexmk
-1638c99f37df5169431a77fe80ffa557 *vignettes/BETS_basic_usage.fls
 db8be77a0a554b7238d1c0e5b56dddb1 *vignettes/biblio.bib
 6f3126842f04f72ed4fb9caa8ff6ef44 *vignettes/images/base.png
 48a4d2cab641f1014eed5a2355d1d659 *vignettes/images/dashboard.png
