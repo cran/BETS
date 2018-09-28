@@ -14,7 +14,7 @@
 #' @export
 
 
-normalize = function(series, mode){
+normalize = function(series, mode="scale"){
   
   if(mode == "maxmin"){
     
@@ -22,7 +22,7 @@ normalize = function(series, mode){
       return(lapply(series, function(x){(x-min(x))/(max(x)-min(x))}))
     }
     else{
-      return((series - min(series))/max(series) - min(series))
+      return((series - min(series))/(max(series) - min(series)))
     }
     
   }
